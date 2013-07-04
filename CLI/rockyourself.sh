@@ -1,5 +1,23 @@
 #!/bin/bash
-# Brought to you by AKI
+# Brought to you by AKI.
+
+has_wget=`which wget`
+if [ -z "$has_wget" ]; then 
+	echo "\n You don't seem to have wget. Installing now ... \n"
+	sudo apt-get install wget
+fi
+
+has_youtube_dl=`which youtube-dl`
+if [ -z "$has_youtube_dl" ]; then 
+	echo "\n You don't seem to have youtube-dl. Installing now ... \n"
+	sudo apt-get install youtube-dl
+fi
+
+has_ffmpeg=`which ffmpeg`
+if [ -z "$has_ffmpeg" ]; then 
+	echo "\n You don't seem to have ffmpeg. Installing now ... \n"
+	sudo apt-get install ffmpeg
+fi
 
 prefix="http://www.youtube.com/results?search_query="
 suffix="+lyrics"
