@@ -1,2 +1,6 @@
 SOURCES += \
-    main.cpp
+    main.cpp \
+    rockbrains.cpp
+
+HEADERS += \
+    rockbrains.h
