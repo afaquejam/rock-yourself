@@ -18,7 +18,7 @@ RockBrains::RockBrains(QWidget *parent) :
     mainLabel->setFont(headingFont);
 
     userInput = new QTextEdit();
-    userInput->setText("Enter your search queries here \n");
+    userInput->setText("linkin park in the end \nfall out boy light em up \n");
     userInput->setFont(userInputFont);
 
     downloadButton = new QPushButton("Let's Rock!");
@@ -29,14 +29,25 @@ RockBrains::RockBrains(QWidget *parent) :
     downloadProgress->setText("Progress will be kinda shown here!");
     downloadProgress->setMaximumHeight(150);
 
+    inputLabel = new QLabel("Write the stuff that you want below:");
+
+
     creditsLabel = new QLabel();
     creditsLabel->setText("Brought to you by AKI (Afaque)!");
     creditsLabel->setStyleSheet("qproperty-alignment: 'AlignLeft'");
 
+    logLabel = new QLabel("Check the progress below:");
+
+    checkoutMessage = new QMessageBox();
+    checkoutMessage->setText("If the log messages didn't say anything bad then check out the Music folder in your home directory. You may find some stuff there :). ");
+
+
     mainLayout = new QVBoxLayout();
     mainLayout->addWidget(mainLabel);
+    mainLayout->addWidget(inputLabel);
     mainLayout->addWidget(userInput);
     mainLayout->addWidget(downloadButton);
+    mainLayout->addWidget(logLabel);
     mainLayout->addWidget(downloadProgress);
     mainLayout->addWidget(creditsLabel);
 
@@ -44,6 +55,7 @@ RockBrains::RockBrains(QWidget *parent) :
 
     QObject::connect(downloadButton, SIGNAL(clicked()), this, SLOT(getUserInput()));
     QObject::connect(&rockProcess, SIGNAL(consoleOutput(QString)), this, SLOT(updateDownloadProgress(QString)));
+    QObject::connect(&rockProcess, SIGNAL(finishedRipping()), this, SLOT(finishedDownloading()));
 
 
 }
@@ -55,15 +67,31 @@ void RockBrains::getUserInput() {
 
 
     QFile file(listLocation);
+
+    if(file.exists()) {
+        QFile::remove(listLocation);
+    }
+
     if (file.open(QIODevice::ReadWrite)) {
         QTextStream stream(&file);
         stream <<  userInput->toPlainText() << endl;
     }
 
+    userInput->setDisabled(true);
+    downloadButton->setDisabled(true);
+    downloadProgress->clear();
     rockProcess.RipIt();
 
 }
 
 void RockBrains::updateDownloadProgress(QString updates) {
-   downloadProgress->setText(updates);
+   downloadProgress->append(updates);
+
+}
+
+void RockBrains::finishedDownloading() {
+    userInput->setDisabled(false);
+    downloadButton->setDisabled(false);
+    checkoutMessage->exec();
+
 }

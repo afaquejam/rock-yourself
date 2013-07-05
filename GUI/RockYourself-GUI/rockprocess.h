@@ -18,10 +18,12 @@ public:
     
 signals:
     void consoleOutput(QString);
+    void finishedRipping();
     
 public slots:
     void readyReadStandardOutput();
     void readyReadStandardError();
+    void emitFinishedSignal(int);
 };
 
 #endif // ROCKPROCESS_H

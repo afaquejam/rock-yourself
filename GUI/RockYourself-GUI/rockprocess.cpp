@@ -6,18 +6,21 @@ RockProcess::RockProcess(QObject *parent) :
 
     connect(&localProcess,SIGNAL(readyReadStandardOutput()),this,SLOT(readyReadStandardOutput()));
     connect(&localProcess,SIGNAL(readyReadStandardError()),this,SLOT(readyReadStandardError()));
+    connect(&localProcess, SIGNAL(finished(int)), this, SLOT(emitFinishedSignal(int)));
 }
 
 void RockProcess::readyReadStandardOutput(){
-    qDebug()<< localProcess.readAllStandardOutput();
-    QString output = localProcess.readAllStandardOutput();
-    emit consoleOutput(output);
+    //qDebug()<< localProcess.readAllStandardOutput();
+    QString log(localProcess.readAllStandardOutput());
+    qDebug() << log;
+    emit consoleOutput(log);
 }
 
 void RockProcess::readyReadStandardError(){
-    qDebug() << localProcess.readAllStandardError();
-    QString output = localProcess.readAllStandardError();
-    emit consoleOutput(output);
+    //qDebug() << localProcess.readAllStandardError();
+    QString log(localProcess.readAllStandardError());
+    qDebug() << log;
+    emit consoleOutput(log);
 }
 
 void RockProcess::RipIt() {
@@ -33,4 +36,8 @@ void RockProcess::RipIt() {
     QStringList arguments;
     arguments << songlistLocation;
     localProcess.start(program, arguments);
+}
+
+void RockProcess::emitFinishedSignal(int exitCode) {
+    emit finishedRipping();
 }

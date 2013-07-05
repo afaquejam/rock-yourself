@@ -14,6 +14,7 @@
 #include <QTextStream>
 #include <QDir>
 #include <QStringList>
+#include <QMessageBox>
 #include "rockprocess.h"
 
 class RockBrains : public QWidget
@@ -26,7 +27,10 @@ public:
     QPushButton *downloadButton;
     QTextBrowser *downloadProgress;
     QLabel *creditsLabel;
+    QLabel *inputLabel;
+    QLabel *logLabel;
     QVBoxLayout *mainLayout;
+    QMessageBox *checkoutMessage;
     RockProcess rockProcess;
     
 signals:
@@ -34,6 +38,7 @@ signals:
 public slots:
     void getUserInput();
     void updateDownloadProgress(QString);
+    void finishedDownloading();
 
 };
 
