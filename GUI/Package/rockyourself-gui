@@ -1,0 +1,25 @@
+### Commented entries have reasonable defaults.
+### Uncomment to edit them.
+# Source: <source package name; defaults to package name>
+Section: misc
+Priority: optional
+# Homepage: <enter URL here; no default>
+Standards-Version: 3.9.2
+
+Package: rockyourself-gui
+Version: 1.0
+Maintainer: Afaque Hussain <afaquejam@gmail.com>
+# Pre-Depends: <comma-separated list of packages>
+Depends: libqt4-dev, wget, youtube-dl, ffmpeg
+# Recommends: <comma-separated list of packages>
+# Suggests: <comma-separated list of packages>
+# Provides: <comma-separated list of packages>
+# Replaces: <comma-separated list of packages>
+# Architecture: all
+# Copyright: <copyright file; defaults to GPL2>
+# Changelog: <changelog file; defaults to a generic changelog>
+# Readme: <README.Debian file; defaults to a generic one>
+# Extra-Files: <comma-separated list of additional files for the doc directory>
+Files: rockyourself /usr/local/bin/
+  RockYourself-GUI /usr/local/bin/
+Description: Something really cool.

@@ -1,0 +1,18 @@
+Download the debian package named rockyourself-gui_1.0_all.
+Install it using the Ubuntu Software center or my running this command: 
+sudo dpkg -i rockyourself-gui_1.0_all
+
+And that's it!
+
+To run simply open up terminal and type in:
+RockYourself-GUI
+
+Type in the stuff you want just separated by line feed. That is one entry per line.
+And Hit the button Let's Rock and watch the magic!
+
+In case you are not happy with this stuff, then you can simply remove by using this command:
+aptitude remove rockyourself-gui
+
+There you go, be happy!
+
+Note: This is a software, it will provide you correct results for correct input. Make sure you input some meaningfull. For example if you just put like bon jovi, then how does the computer know to  which song it has downlaod. Well, it downloads the most popular song of that artist. Don't put something weird like robin hood song. You will be surprised with the results.

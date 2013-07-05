@@ -85,7 +85,7 @@ void RockBrains::getUserInput() {
 }
 
 void RockBrains::updateDownloadProgress(QString updates) {
-   downloadProgress->append(updates);
+    downloadProgress->append(updates);
 
 }
 
