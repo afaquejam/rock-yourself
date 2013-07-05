@@ -1,14 +1,20 @@
+// This stuff is from AKI.
+
 #ifndef ROCKBRAINS_H
 #define ROCKBRAINS_H
 
 #include <QWidget>
 #include<QTextEdit>
-#include <QProgressBar>
+#include <QTextBrowser>
 #include <QProcess>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QLabel>
-
+#include <QFile>
+#include <QTextStream>
+#include <QDir>
+#include <QStringList>
+#include "rockprocess.h"
 
 class RockBrains : public QWidget
 {
@@ -18,17 +24,17 @@ public:
     QLabel *mainLabel;
     QTextEdit *userInput;
     QPushButton *downloadButton;
-    QProgressBar *downloadProgress;
+    QTextBrowser *downloadProgress;
     QLabel *creditsLabel;
     QVBoxLayout *mainLayout;
-
-
+    RockProcess rockProcess;
     
 signals:
     
 public slots:
     void getUserInput();
-    
+    void updateDownloadProgress(QString);
+
 };
 
 #endif // ROCKBRAINS_H

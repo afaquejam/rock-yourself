@@ -1,7 +1,6 @@
+// This stuff is from AKI.
+
 #include "rockbrains.h"
-#include <QFile>
-#include <QTextStream>
-#include <QDir>
 
 RockBrains::RockBrains(QWidget *parent) :
     QWidget(parent)
@@ -26,8 +25,9 @@ RockBrains::RockBrains(QWidget *parent) :
     downloadButton->setFont(buttonFont);
     downloadButton->setMinimumHeight(75);
 
-    downloadProgress = new QProgressBar();
-    downloadProgress->hide();
+    downloadProgress = new QTextBrowser();
+    downloadProgress->setText("Progress will be kinda shown here!");
+    downloadProgress->setMaximumHeight(150);
 
     creditsLabel = new QLabel();
     creditsLabel->setText("Brought to you by AKI (Afaque)!");
@@ -43,6 +43,9 @@ RockBrains::RockBrains(QWidget *parent) :
     this->setLayout(mainLayout);
 
     QObject::connect(downloadButton, SIGNAL(clicked()), this, SLOT(getUserInput()));
+    QObject::connect(&rockProcess, SIGNAL(consoleOutput(QString)), this, SLOT(updateDownloadProgress(QString)));
+
+
 }
 
 void RockBrains::getUserInput() {
@@ -50,13 +53,17 @@ void RockBrains::getUserInput() {
     QString listLocation = QDir::homePath();
     listLocation.append("/Music/songlist");
 
-        QFile file(listLocation);
-        if (file.open(QIODevice::ReadWrite)) {
-            QTextStream stream(&file);
-            stream <<  userInput->toPlainText() << endl;
-        }
 
-        downloadProgress->setValue(50);
-        downloadProgress->show();
+    QFile file(listLocation);
+    if (file.open(QIODevice::ReadWrite)) {
+        QTextStream stream(&file);
+        stream <<  userInput->toPlainText() << endl;
+    }
 
+    rockProcess.RipIt();
+
+}
+
+void RockBrains::updateDownloadProgress(QString updates) {
+   downloadProgress->setText(updates);
 }
