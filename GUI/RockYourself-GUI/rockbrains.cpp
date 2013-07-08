@@ -6,12 +6,11 @@ RockBrains::RockBrains(QWidget *parent) :
     QWidget(parent)
 {
     this->setWindowTitle("Rock Yourself Mates!");
-    this->setMinimumSize(800, 800);
+    this->setMinimumSize(800, 600);
 
     QFont headingFont( "Arial", 30, QFont::Bold);
     QFont userInputFont( "Arial", 14);
     QFont buttonFont( "Arial", 20, QFont::Bold);
-
 
     mainLabel = new QLabel("Rock Yourself");
     mainLabel->setStyleSheet("qproperty-alignment: 'AlignCenter'");
