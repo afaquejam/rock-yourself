@@ -8,53 +8,77 @@ RockBrains::RockBrains(QWidget *parent) :
     this->setWindowTitle("Rock Yourself Mates!");
     this->setMinimumSize(800, 600);
 
-    QFont headingFont( "Arial", 30, QFont::Bold);
-    QFont userInputFont( "Arial", 14);
     QFont buttonFont( "Arial", 20, QFont::Bold);
 
-    mainLabel = new QLabel("Rock Yourself");
-    mainLabel->setStyleSheet("qproperty-alignment: 'AlignCenter'");
-    mainLabel->setFont(headingFont);
+    logoLabel = new QLabel();
+    logoLabel->setPixmap(QPixmap::fromImage(QImage(":image/Icons/FL.png")));
+    logoLabel->setStyleSheet("qproperty-alignment: 'AlignCenter'");
+
+    infoLabel = new QLabel("Write the stuff that you want below:");
+    isPopular = new QCheckBox("Popular");
+    isPopular->setChecked(true);
+
+    checkBoxLayout = new QHBoxLayout();
+    checkBoxLayout->addWidget(infoLabel);
+    checkBoxLayout->addWidget(isPopular);
 
     userInput = new QTextEdit();
-    userInput->setText("linkin park in the end \nfall out boy light em up \n");
-    userInput->setFont(userInputFont);
 
-    downloadButton = new QPushButton("Let's Rock!");
-    downloadButton->setFont(buttonFont);
-    downloadButton->setMinimumHeight(75);
+    downloadAudioButton = new QPushButton("Get Audio");
+    downloadAudioButton->setIcon(QIcon(QPixmap::fromImage(QImage(":image/Icons/audio.png"))));
+    //downloadAudioButton->setFont(buttonFont);
 
-    downloadProgress = new QTextBrowser();
-    downloadProgress->setText("Progress will be kinda shown here!");
-    downloadProgress->setMaximumHeight(150);
+    downloadVideoButton = new QPushButton("Get Video");
+    downloadVideoButton->setIcon(QIcon(QPixmap::fromImage(QImage(":image/Icons/video.png"))));
+    //downloadVideoButton->setFont(buttonFont);
 
-    inputLabel = new QLabel("Write the stuff that you want below:");
+    mediaButtonsLayout = new QHBoxLayout();
+    mediaButtonsLayout->addWidget(downloadAudioButton);
+    mediaButtonsLayout->addWidget(downloadVideoButton);
+
+    showLogButton = new QPushButton("Show Log");
+    showLogButton->setIcon(QIcon(QPixmap::fromImage(QImage(":image/Icons/log.png"))));
+
+    logLabel = new QLabel("Current Progress will be shown here.");
+    logLabel->hide();
+
+    currentProgress = new QProgressBar();
+    currentProgress->hide();
+
+    helpButton = new QPushButton("Help");
+    helpButton->setIcon(QIcon(QPixmap::fromImage(QImage(":image/Icons/help.png"))));
 
 
-    creditsLabel = new QLabel();
-    creditsLabel->setText("Brought to you by AKI (Afaque)!");
-    creditsLabel->setStyleSheet("qproperty-alignment: 'AlignLeft'");
+    aboutButton = new QPushButton("About");
+    aboutButton->setIcon(QIcon(QPixmap::fromImage(QImage(":image/Icons/about.png"))));
 
-    logLabel = new QLabel("Check the progress below:");
+
+    footerLayout = new QHBoxLayout();
+    footerLayout->addWidget(helpButton);
+    footerLayout->addWidget(aboutButton);
+
+    //downloadProgress = new QTextBrowser();
+    //downloadProgress->setText("Progress will be kinda shown here!");
+    //downloadProgress->setMaximumHeight(150);
 
     checkoutMessage = new QMessageBox();
     checkoutMessage->setText("If the log messages didn't say anything bad then check out the Music folder in your home directory. You may find some stuff there :). ");
 
 
     mainLayout = new QVBoxLayout();
-    mainLayout->addWidget(mainLabel);
-    mainLayout->addWidget(inputLabel);
-    mainLayout->addWidget(userInput);
-    mainLayout->addWidget(downloadButton);
     mainLayout->addWidget(logLabel);
-    mainLayout->addWidget(downloadProgress);
-    mainLayout->addWidget(creditsLabel);
+    mainLayout->addLayout(checkBoxLayout);
+    mainLayout->addWidget(userInput);
+    mainLayout->addLayout(mediaButtonsLayout);
+    mainLayout->addWidget(logLabel);
+    mainLayout->addWidget(currentProgress);
+    mainLayout->addLayout(footerLayout);
 
     this->setLayout(mainLayout);
 
-    QObject::connect(downloadButton, SIGNAL(clicked()), this, SLOT(getUserInput()));
-    QObject::connect(&rockProcess, SIGNAL(consoleOutput(QString)), this, SLOT(updateDownloadProgress(QString)));
-    QObject::connect(&rockProcess, SIGNAL(finishedRipping()), this, SLOT(finishedDownloading()));
+    //QObject::connect(downloadButton, SIGNAL(clicked()), this, SLOT(getUserInput()));
+    //QObject::connect(&rockProcess, SIGNAL(consoleOutput(QString)), this, SLOT(updateDownloadProgress(QString)));
+    //QObject::connect(&rockProcess, SIGNAL(finishedRipping()), this, SLOT(finishedDownloading()));
 
 
 }
@@ -77,7 +101,7 @@ void RockBrains::getUserInput() {
     }
 
     userInput->setDisabled(true);
-    downloadButton->setDisabled(true);
+    //downloadButton->setDisabled(true);
     downloadProgress->clear();
     rockProcess.RipIt();
 
@@ -90,7 +114,7 @@ void RockBrains::updateDownloadProgress(QString updates) {
 
 void RockBrains::finishedDownloading() {
     userInput->setDisabled(false);
-    downloadButton->setDisabled(false);
+    //downloadButton->setDisabled(false);
     checkoutMessage->exec();
 
 }

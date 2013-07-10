@@ -6,3 +6,6 @@ SOURCES += \
 HEADERS += \
     rockbrains.h \
     rockprocess.h
+
+RESOURCES += \
+    Icons.qrc
