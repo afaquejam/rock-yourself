@@ -1,4 +1,24 @@
-// This stuff is from AKI.
+/*
+  * A simple project to reduce the pain of getting (more than one & mostly interesting) stuff
+  * from the internet by eliminating the need of URLs as much as possible.
+  *
+  * Project : Rock-Yourself
+  * Code by : Afaque "AKI" Hussain
+  * Contact : Afaque.Hussain@outlook.com
+  *
+  * This program is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation, either version 3 of the License, or
+  * any later version.
+
+  * This program is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+
+  * Please read the GNU General Public License at <http://www.gnu.org/licenses/>.
+  */
+
 
 #include "rockbrains.h"
 
@@ -87,6 +107,41 @@ RockBrains::RockBrains(QWidget *parent) :
     mainLayout->addWidget(currentProgress);
     mainLayout->addWidget(warningLabel);
 
+    logIcon = new QLabel("Log");
+    logMessages = new QTextBrowser();
+    logMessages->setText("Some kind Complete Log Messages will be shown here.");
+
+    logWindowLayout = new QVBoxLayout();
+    logWindowLayout->addWidget(logIcon);
+    logWindowLayout->addWidget(logMessages);
+
+    logWindow = new QWidget();
+    logWindow->setLayout(logWindowLayout);
+    logWindow->setMinimumSize(600, 400);
+
+    helpLabel = new QLabel("Help");
+    helpContent = new QTextBrowser();
+    helpContent->setText("Some kind of help will be shown here.");
+
+    helpWindowLayout = new QVBoxLayout();
+    helpWindowLayout->addWidget(helpLabel);
+    helpWindowLayout->addWidget(helpContent);
+
+    helpWindow = new QWidget();
+    helpWindow->setLayout(helpWindowLayout);
+    helpWindow->setMinimumSize(600, 400);
+
+    aboutLabel = new QLabel("About");
+    aboutContent = new QTextBrowser();
+    aboutContent->setText("Something about me will be shown here.");
+
+    aboutWindowLayout = new QVBoxLayout();
+    aboutWindowLayout->addWidget(aboutLabel);
+    aboutWindowLayout->addWidget(aboutContent);
+
+    aboutWindow = new QWidget();
+    aboutWindow->setLayout(aboutWindowLayout);
+    aboutWindow->setMinimumSize(600, 400);
 
     this->setLayout(mainLayout);
 
@@ -94,6 +149,9 @@ RockBrains::RockBrains(QWidget *parent) :
     //QObject::connect(&rockProcess, SIGNAL(consoleOutput(QString)), this, SLOT(updateDownloadProgress(QString)));
     //QObject::connect(&rockProcess, SIGNAL(finishedRipping()), this, SLOT(finishedDownloading()));
     QObject::connect(clearButton, SIGNAL(clicked()), userInput, SLOT(clear()));
+    QObject::connect(showLogButton, SIGNAL(clicked()), logWindow, SLOT(show()));
+    QObject::connect(helpButton, SIGNAL(clicked()), helpWindow, SLOT(show()));
+    QObject::connect(aboutButton, SIGNAL(clicked()), aboutWindow, SLOT(show()));
 
 
 }
