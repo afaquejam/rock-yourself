@@ -2,9 +2,10 @@
     <qresource prefix="/image">
         <file>Icons/about.png</file>
         <file>Icons/audio.png</file>
-        <file>Icons/FL.png</file>
         <file>Icons/help.png</file>
         <file>Icons/log.png</file>
+        <file>Icons/Logo.png</file>
         <file>Icons/video.png</file>
+        <file>Icons/clear.png</file>
     </qresource>
 </RCC>

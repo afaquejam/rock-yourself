@@ -17,6 +17,7 @@
 #include <QMessageBox>
 #include <QCheckBox>
 #include <QProgressBar>
+#include <QWidget>
 #include "rockprocess.h"
 
 class RockBrains : public QWidget
@@ -27,20 +28,28 @@ public:
     QLabel *logoLabel;
     QLabel *infoLabel;
     QLabel *logLabel;
+    QLabel *warningLabel;
     QTextEdit *userInput;
     QPushButton *downloadAudioButton;
     QPushButton *downloadVideoButton;
     QPushButton *showLogButton;
     QPushButton *helpButton;
     QPushButton *aboutButton;
-    QTextBrowser *downloadProgress;
     QCheckBox *isPopular;
     QVBoxLayout *mainLayout;
-    QHBoxLayout *checkBoxLayout;
-    QHBoxLayout *mediaButtonsLayout;
-    QHBoxLayout *footerLayout;
+    QVBoxLayout *inputLayout;
+    QVBoxLayout *buttonsLayout;
+    QHBoxLayout *containerLayout;
+    QHBoxLayout *logLayout;
     QMessageBox *checkoutMessage;
     QProgressBar *currentProgress;
+    QPushButton *clearButton;
+    QWidget *helpWindow;
+    QWidget *aboutWindow;
+    QTextBrowser *logMessages;
+    QTextBrowser *helpContent;
+    QLabel *aboutIcon;
+    QLabel *aboutText;
     RockProcess rockProcess;
     
 signals:
