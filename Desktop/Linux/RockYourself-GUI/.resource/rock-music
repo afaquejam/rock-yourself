@@ -21,8 +21,16 @@
 # Please read the GNU General Public License at <http://www.gnu.org/licenses/>.
 #/
 
-prefix="http://www.youtube.com/results?search_query="
 
+if [ -f "resultPage" ]; then 
+  rm resultPage
+fi 
+
+if [ -f "videofile.part" ]; then 
+  rm videofile.part
+fi
+
+prefix="http://www.youtube.com/results?search_query="
 
 if [ "$1" -eq 0 ]; then 
 	suffix=""
@@ -46,7 +54,7 @@ if [ -n "$2" ]; then
         if [ -f "videofile" ]; then
             echo ""
             echo "Stuff related to $line Downloaded. How about we add a little processing to it?"
-            filename=`echo $line | sed 's/ /_/g'`
+            filename=`echo $2 | sed 's/+/_/g'`
             ffmpeg -v 0 -i videofile -f mp3 -ab 192000 -vn $filename.mp3
 
             if [ -f "$filename.mp3" ]; then

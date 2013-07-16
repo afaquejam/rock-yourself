@@ -36,7 +36,7 @@ class RockProcess : public QObject
 public:
     explicit RockProcess(QObject *parent = 0);
     QProcess localProcess;
-    void getAudio(QString);
+    void getAudio(QString, bool);
     void getVideo(QString);
     
 signals:

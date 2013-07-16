@@ -46,7 +46,7 @@ void RockProcess::readyReadStandardError(){
     emit consoleOutput(log);
 }
 
-void RockProcess::getAudio(QString argument) {
+void RockProcess::getAudio(QString argument, bool popular) {
     QString program = "rock-music";
 
     QString workingLocation = QDir::homePath();
@@ -54,8 +54,15 @@ void RockProcess::getAudio(QString argument) {
     QDir::setCurrent(workingLocation);
 
     QStringList arguments;
+    if (popular) {
+        arguments<< "1";
+    } else {
+        arguments<< "0";
+    }
+
     arguments << argument;
     localProcess.start(program, arguments);
+
 
 }
 

@@ -77,11 +77,18 @@ public:
     QVBoxLayout *helpWindowLayout;
     QVBoxLayout *aboutWindowLayout;
     RockProcess rockProcess;
+    int totalEnteries;
+    int current;
+    QStringList requestList;
+    bool popular;
+
     
 signals:
-    
+    void finishedAllQueries();
+    void processFinished();
 public slots:
     void getAudio();
+    void getNextQuery();
     void updateDownloadProgress(QString);
     void finishedDownloading();
 

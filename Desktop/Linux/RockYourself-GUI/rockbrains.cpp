@@ -87,6 +87,7 @@ RockBrains::RockBrains(QWidget *parent) :
     logLabel->hide();
 
     currentProgress = new QProgressBar();
+    currentProgress->setTextVisible(true);
     currentProgress->hide();
 
     warningLabel = new QLabel();
@@ -156,6 +157,10 @@ RockBrains::RockBrains(QWidget *parent) :
     QObject::connect(helpButton, SIGNAL(clicked()), helpWindow, SLOT(show()));
     QObject::connect(aboutButton, SIGNAL(clicked()), aboutWindow, SLOT(show()));
 
+    QObject::connect(&rockProcess, SIGNAL(finishedRipping()), this, SLOT(getNextQuery()));
+    QObject::connect(this, SIGNAL(finishedAllQueries()), this, SLOT(finishedDownloading()));
+
+
 
 }
 
@@ -169,26 +174,12 @@ void RockBrains::getAudio() {
     downloadVideoButton->setDisabled(true);
     clearButton->setDisabled(true);
     showLogButton->setDisabled(true);
-    // Still have to handle the case where user just enters bunch of spaces and line breaks.
 
-    QStringList requestList = userInput->toPlainText().split("\n");
-    int numberOfEnteries = requestList.size();
-    qDebug()<< numberOfEnteries;
-    for( int i=0; i < numberOfEnteries; i++) {
-        QString request = requestList.at(i);
-        rockProcess.getAudio(request);
-
-    }
-
-    logLabel->hide();
-    currentProgress->hide();
-    userInput->setDisabled(false);
-    isPopular->setDisabled(false);
-    downloadAudioButton->setDisabled(false);
-    downloadVideoButton->setDisabled(false);
-    clearButton->setDisabled(false);
-    showLogButton->setDisabled(false);
-
+    requestList = userInput->toPlainText().split("\n");
+    totalEnteries = requestList.size();
+    current = -1;
+    popular = isPopular->isChecked();
+    getNextQuery();
 
 }
 
@@ -200,8 +191,30 @@ void RockBrains::updateDownloadProgress(QString updates) {
 }
 
 void RockBrains::finishedDownloading() {
+
+    logLabel->hide();
+    currentProgress->hide();
     userInput->setDisabled(false);
-    //downloadButton->setDisabled(false);
+    isPopular->setDisabled(false);
+    downloadAudioButton->setDisabled(false);
+    downloadVideoButton->setDisabled(false);
+    clearButton->setDisabled(false);
+    showLogButton->setDisabled(false);
     checkoutMessage->exec();
+
+}
+
+void RockBrains::getNextQuery() {
+    current++;
+    if(current < totalEnteries) {
+        QString request = requestList.at(current);
+        request = request.replace(" ","+");
+        QString progressBarText(" Downloading " + QString::number(current+1) + " of " + QString::number(totalEnteries) + " ... ");
+        currentProgress->setFormat(progressBarText);
+        currentProgress->setValue(((current+1)*100)/totalEnteries);
+        rockProcess.getAudio(request, popular);
+    } else {
+        emit finishedAllQueries();
+    }
 
 }
