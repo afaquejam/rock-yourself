@@ -1,6 +1,7 @@
 /*
   * A simple project to reduce the pain of getting (more than one & mostly interesting) stuff
   * from the internet by eliminating the need of URLs as much as possible.
+  * By stuff here, we mean the content which has been shared under Creative Commons License or as free.
   *
   * Project : Rock-Yourself
   * Code by : Afaque "AKI" Hussain
@@ -45,18 +46,28 @@ void RockProcess::readyReadStandardError(){
     emit consoleOutput(log);
 }
 
-void RockProcess::RipIt() {
+void RockProcess::getAudio(QString argument) {
+    QString program = "rock-music";
 
-    QString program = "rockyourself";
     QString workingLocation = QDir::homePath();
     workingLocation.append("/Music");
     QDir::setCurrent(workingLocation);
 
-    QString songlistLocation = workingLocation;
-    songlistLocation.append("/songlist");
+    QStringList arguments;
+    arguments << argument;
+    localProcess.start(program, arguments);
+
+}
+
+void RockProcess::getVideo(QString argument) {
+    QString program = "rock-video";
+
+    QString workingLocation = QDir::homePath();
+    workingLocation.append("/Video");
+    QDir::setCurrent(workingLocation);
 
     QStringList arguments;
-    arguments << songlistLocation;
+    arguments << argument;
     localProcess.start(program, arguments);
 }
 

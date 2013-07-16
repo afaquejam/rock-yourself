@@ -1,6 +1,7 @@
 /*
   * A simple project to reduce the pain of getting (more than one & mostly interesting) stuff
   * from the internet by eliminating the need of URLs as much as possible.
+  * By stuff here, we mean the content which has been shared under Creative Commons License or as free.
   *
   * Project : Rock-Yourself
   * Code by : Afaque "AKI" Hussain

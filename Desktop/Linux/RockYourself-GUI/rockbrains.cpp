@@ -1,6 +1,7 @@
 /*
   * A simple project to reduce the pain of getting (more than one & mostly interesting) stuff
   * from the internet by eliminating the need of URLs as much as possible.
+  * By stuff here, we mean the content which has been shared under Creative Commons License or as free.
   *
   * Project : Rock-Yourself
   * Code by : Afaque "AKI" Hussain
@@ -37,7 +38,6 @@ RockBrains::RockBrains(QWidget *parent) :
     infoLabel = new QLabel("Write below the list of stuff that you would like to have as shown: ");
 
     userInput = new QTextEdit();
-    userInput->setText("Sherlock Holmes Complete Audiobook \nRobin Hood Chapter 1 Audio Book. \nHit Clear Button to clear these enteries.");
 
     inputLayout = new QVBoxLayout();
     inputLayout->addWidget(infoLabel);
@@ -145,9 +145,12 @@ RockBrains::RockBrains(QWidget *parent) :
 
     this->setLayout(mainLayout);
 
-    //QObject::connect(downloadButton, SIGNAL(clicked()), this, SLOT(getUserInput()));
-    //QObject::connect(&rockProcess, SIGNAL(consoleOutput(QString)), this, SLOT(updateDownloadProgress(QString)));
+
+
     //QObject::connect(&rockProcess, SIGNAL(finishedRipping()), this, SLOT(finishedDownloading()));
+
+    QObject::connect(&rockProcess, SIGNAL(consoleOutput(QString)), this, SLOT(updateDownloadProgress(QString)));
+    QObject::connect(downloadAudioButton, SIGNAL(clicked()), this, SLOT(getAudio()));
     QObject::connect(clearButton, SIGNAL(clicked()), userInput, SLOT(clear()));
     QObject::connect(showLogButton, SIGNAL(clicked()), logWindow, SLOT(show()));
     QObject::connect(helpButton, SIGNAL(clicked()), helpWindow, SLOT(show()));
@@ -156,32 +159,43 @@ RockBrains::RockBrains(QWidget *parent) :
 
 }
 
-void RockBrains::getUserInput() {
+void RockBrains::getAudio() {
 
-    QString listLocation = QDir::homePath();
-    listLocation.append("/Music/songlist");
-
-
-    QFile file(listLocation);
-
-    if(file.exists()) {
-        QFile::remove(listLocation);
-    }
-
-    if (file.open(QIODevice::ReadWrite)) {
-        QTextStream stream(&file);
-        stream <<  userInput->toPlainText() << endl;
-    }
-
+    logLabel->show();
+    currentProgress->show();
     userInput->setDisabled(true);
-    //downloadButton->setDisabled(true);
-    //downloadProgress->clear();
-    rockProcess.RipIt();
+    isPopular->setDisabled(true);
+    downloadAudioButton->setDisabled(true);
+    downloadVideoButton->setDisabled(true);
+    clearButton->setDisabled(true);
+    showLogButton->setDisabled(true);
+    // Still have to handle the case where user just enters bunch of spaces and line breaks.
+
+    QStringList requestList = userInput->toPlainText().split("\n");
+    int numberOfEnteries = requestList.size();
+    qDebug()<< numberOfEnteries;
+    for( int i=0; i < numberOfEnteries; i++) {
+        QString request = requestList.at(i);
+        rockProcess.getAudio(request);
+
+    }
+
+    logLabel->hide();
+    currentProgress->hide();
+    userInput->setDisabled(false);
+    isPopular->setDisabled(false);
+    downloadAudioButton->setDisabled(false);
+    downloadVideoButton->setDisabled(false);
+    clearButton->setDisabled(false);
+    showLogButton->setDisabled(false);
+
 
 }
 
 void RockBrains::updateDownloadProgress(QString updates) {
-    //downloadProgress->append(updates);
+    logLabel->setText(updates);
+    logMessages->append(updates);
+
 
 }
 

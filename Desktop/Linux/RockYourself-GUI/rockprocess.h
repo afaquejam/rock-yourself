@@ -1,6 +1,7 @@
 /*
   * A simple project to reduce the pain of getting (more than one & mostly interesting) stuff
   * from the internet by eliminating the need of URLs as much as possible.
+  * By stuff here, we mean the content which has been shared under Creative Commons License or as free.
   *
   * Project : Rock-Yourself
   * Code by : Afaque "AKI" Hussain
@@ -19,7 +20,6 @@
   * Please read the GNU General Public License at <http://www.gnu.org/licenses/>.
   */
 
-
 #ifndef ROCKPROCESS_H
 #define ROCKPROCESS_H
 
@@ -36,7 +36,8 @@ class RockProcess : public QObject
 public:
     explicit RockProcess(QObject *parent = 0);
     QProcess localProcess;
-    void RipIt();
+    void getAudio(QString);
+    void getVideo(QString);
     
 signals:
     void consoleOutput(QString);

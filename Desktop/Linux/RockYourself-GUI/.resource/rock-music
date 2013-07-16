@@ -1,0 +1,76 @@
+#!/bin/bash
+#
+# A simple project to reduce the pain of getting (more than one & mostly interesting) stuff 
+# from the internet by eliminating the need of URLs as much as possible.
+# By stuff here, we mean the content which has been shared under Creative Commons License or as free.
+# 
+# Project : Rock-Yourself
+# Code by : Afaque "AKI" Hussain
+# Contact : Afaque.Hussain@outlook.com
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# Please read the GNU General Public License at <http://www.gnu.org/licenses/>.
+#/
+
+prefix="http://www.youtube.com/results?search_query="
+
+
+if [ "$1" -eq 0 ]; then 
+	suffix=""
+else 
+	suffix="+lyrics"
+fi
+
+if [ -n "$2" ]; then
+    # This has to be handled from Qt
+    #search_query=`echo $1 | sed 's/ /+/g'`
+    echo $prefix$2$suffix
+    wget --quiet -O resultPage $prefix$2$suffix
+    isEmpty=`cat resultPage`
+
+    if [ -n "$isEmpty" ]; then
+        resource_url=`sed -n "/id=\"search-results\"/,/<\/span>/p" resultPage | grep -io 'href.*" c' | grep -o '".*"' | sed 's/"/"www.youtube.com/'| sed 's/"//g'`
+        echo ""
+        echo "Downloading $line stuff from the internet .... "
+        youtube-dl -o videofile $resource_url
+
+        if [ -f "videofile" ]; then
+            echo ""
+            echo "Stuff related to $line Downloaded. How about we add a little processing to it?"
+            filename=`echo $line | sed 's/ /_/g'`
+            ffmpeg -v 0 -i videofile -f mp3 -ab 192000 -vn $filename.mp3
+
+            if [ -f "$filename.mp3" ]; then
+                echo ""
+                echo "Got $line stuff successfully, maybe :P" 
+            else
+                echo ""
+                echo "Oops, something happened during processing. Probably the downloaded stuff was bad."
+            fi 
+
+            rm resultPage videofile
+
+        else 
+
+            echo ""
+            echo "Check you SongsList Mate! May be Youtube got confused about $line."
+            rm resultPage
+        fi 
+    
+    else
+
+      echo ""
+      echo "Well, this software kinda gets stuff from the Internet. Make sure you're connected to it. Cheers!"
+    fi
+else 
+	echo "Cant get something from nothing!"
+fi
