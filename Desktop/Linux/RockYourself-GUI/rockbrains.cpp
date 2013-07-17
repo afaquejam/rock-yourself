@@ -166,20 +166,37 @@ RockBrains::RockBrains(QWidget *parent) :
 
 void RockBrains::getAudio() {
 
-    logLabel->show();
-    currentProgress->show();
-    userInput->setDisabled(true);
-    isPopular->setDisabled(true);
-    downloadAudioButton->setDisabled(true);
-    downloadVideoButton->setDisabled(true);
-    clearButton->setDisabled(true);
-    showLogButton->setDisabled(true);
 
-    requestList = userInput->toPlainText().split("\n");
-    totalEnteries = requestList.size();
-    current = -1;
-    popular = isPopular->isChecked();
-    getNextQuery();
+    logMessages->clear();
+
+    if (!userInput->toPlainText().replace(QRegExp("\\s+"),"").isEmpty()) {
+
+        logLabel->show();
+        currentProgress->show();
+        userInput->setDisabled(true);
+        isPopular->setDisabled(true);
+        downloadAudioButton->setDisabled(true);
+        downloadVideoButton->setDisabled(true);
+        clearButton->setDisabled(true);
+        showLogButton->setDisabled(true);
+
+        requestList = userInput->toPlainText().split("\n");
+        totalEnteries = requestList.size();
+        current = -1;
+        popular = isPopular->isChecked();
+        getNextQuery();
+
+    } else {
+        QMessageBox *noInputMessage = new QMessageBox();
+        noInputMessage->setText("You're fooling around mate!");
+
+        logMessages->setText("Nothing was entered. You're fooling around mate.");
+        noInputMessage->exec();
+        userInput->clear();
+
+    }
+
+
 
 }
 
@@ -208,11 +225,21 @@ void RockBrains::getNextQuery() {
     current++;
     if(current < totalEnteries) {
         QString request = requestList.at(current);
-        request = request.replace(" ","+");
-        QString progressBarText(" Downloading " + QString::number(current+1) + " of " + QString::number(totalEnteries) + " ... ");
-        currentProgress->setFormat(progressBarText);
-        currentProgress->setValue(((current+1)*100)/totalEnteries);
-        rockProcess.getAudio(request, popular);
+        request = request.replace(QRegExp("\\s+"),"+");
+
+        if(QString::compare(request, "+") == 0 || request.isEmpty()) {
+            qDebug()<<"Empty Query.";
+            logMessages->append("Empty Query.");
+            getNextQuery();
+        } else {
+            qDebug()<<request;
+            QString progressBarText(" Downloading " + QString::number(current+1) + " of " + QString::number(totalEnteries) + " ... ");
+            currentProgress->setFormat(progressBarText);
+            currentProgress->setValue((((current+1)*100)/totalEnteries)-1);
+            rockProcess.getAudio(request, popular);
+
+        }
+
     } else {
         emit finishedAllQueries();
     }
