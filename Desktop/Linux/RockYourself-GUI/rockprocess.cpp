@@ -70,7 +70,7 @@ void RockProcess::getVideo(QString argument) {
     QString program = "rock-video";
 
     QString workingLocation = QDir::homePath();
-    workingLocation.append("/Video");
+    workingLocation.append("/Videos");
     QDir::setCurrent(workingLocation);
 
     QStringList arguments;

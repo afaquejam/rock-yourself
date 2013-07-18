@@ -96,7 +96,6 @@ RockBrains::RockBrains(QWidget *parent) :
     checkoutMessage = new QMessageBox();
     checkoutMessage->setText("If the log messages didn't say anything bad then check out the Music folder in your home directory. You may find some stuff there :). ");
 
-
     mainLayout = new QVBoxLayout();
     mainLayout->addWidget(logoLabel);
     mainLayout->addLayout(containerLayout);
@@ -142,81 +141,82 @@ RockBrains::RockBrains(QWidget *parent) :
 
     this->setLayout(mainLayout);
 
-
-
-    //QObject::connect(&rockProcess, SIGNAL(finishedRipping()), this, SLOT(finishedDownloading()));
-
-    QObject::connect(&rockProcess, SIGNAL(consoleOutput(QString)), this, SLOT(updateDownloadProgress(QString)));
     QObject::connect(downloadAudioButton, SIGNAL(clicked()), this, SLOT(getAudio()));
+    QObject::connect(downloadVideoButton, SIGNAL(clicked()), this, SLOT(getVideo()));
     QObject::connect(clearButton, SIGNAL(clicked()), userInput, SLOT(clear()));
     QObject::connect(showLogButton, SIGNAL(clicked()), logWindow, SLOT(show()));
     QObject::connect(helpButton, SIGNAL(clicked()), helpWindow, SLOT(show()));
     QObject::connect(aboutButton, SIGNAL(clicked()), aboutWindow, SLOT(show()));
 
-    QObject::connect(&rockProcess, SIGNAL(finishedRipping()), this, SLOT(getNextQuery()));
+    QObject::connect(&audioProcess, SIGNAL(consoleOutput(QString)), this, SLOT(updateDownloadProgress(QString)));
+    QObject::connect(&videoProcess, SIGNAL(consoleOutput(QString)), this, SLOT(updateDownloadProgress(QString)));
+    QObject::connect(&audioProcess, SIGNAL(finishedRipping()), this, SLOT(getNextAudioQuery()));
+    QObject::connect(&videoProcess, SIGNAL(finishedRipping()), this, SLOT(getNextVideoQuery()));
+
     QObject::connect(this, SIGNAL(finishedAllQueries()), this, SLOT(finishedDownloading()));
-
-
-
 }
 
 void RockBrains::getAudio() {
-
-
     logMessages->clear();
 
     if (processUserInput()) {
-        logLabel->show();
-        currentProgress->show();
-        userInput->setDisabled(true);
-        isPopular->setDisabled(true);
-        downloadAudioButton->setDisabled(true);
-        downloadVideoButton->setDisabled(true);
-        clearButton->setDisabled(true);
-        showLogButton->setDisabled(true);
-
+        disableControls();
         totalEnteries = requestList.size();
         current = -1;
         popular = isPopular->isChecked();
         getNextAudioQuery();
-
     }
+}
 
+void RockBrains::getVideo() {
+    logMessages->clear();
+
+    if (processUserInput()) {
+        disableControls();
+        totalEnteries = requestList.size();
+        current = -1;
+        getNextVideoQuery();
+    }
 }
 
 void RockBrains::updateDownloadProgress(QString updates) {
     logLabel->setText(updates);
     logMessages->append(updates);
-
-
 }
 
 void RockBrains::finishedDownloading() {
-
-    logLabel->hide();
-    currentProgress->hide();
-    userInput->setDisabled(false);
-    isPopular->setDisabled(false);
-    downloadAudioButton->setDisabled(false);
-    downloadVideoButton->setDisabled(false);
-    clearButton->setDisabled(false);
-    showLogButton->setDisabled(false);
+    enableControls();
     checkoutMessage->exec();
-
 }
 
 void RockBrains::getNextAudioQuery() {
     current++;
-    if(current < totalEnteries) {
+
+    if (current < totalEnteries) {
         QString request = requestList.at(current);
         qDebug()<<request;
         QString progressBarText(" Downloading " + QString::number(current+1) + " of " + QString::number(totalEnteries) + " ... ");
         currentProgress->setFormat(progressBarText);
         currentProgress->setValue((((current+1)*100)/totalEnteries)-1);
-        rockProcess.getAudio(request, popular);
+        audioProcess.getAudio(request, popular);
     } else {
         emit finishedAllQueries();
     }
+}
+
+void RockBrains::getNextVideoQuery() {
+    current++;
+    if (current < totalEnteries) {
+        QString request = requestList.at(current);
+        qDebug()<<request;
+        QString progressBarText(" Downloading " + QString::number(current+1) + " of " + QString::number(totalEnteries) + " ... ");
+        currentProgress->setFormat(progressBarText);
+        currentProgress->setValue((((current+1)*100)/totalEnteries)-1);
+        videoProcess.getVideo(request);
+    } else {
+        emit finishedAllQueries();
+    }
+
 }
 
 bool RockBrains::processUserInput() {
@@ -241,4 +241,26 @@ bool RockBrains::processUserInput() {
         userInput->clear();
         return false;
     }
+}
+
+void RockBrains::enableControls() {
+    logLabel->hide();
+    currentProgress->hide();
+    userInput->setDisabled(false);
+    isPopular->setDisabled(false);
+    downloadAudioButton->setDisabled(false);
+    downloadVideoButton->setDisabled(false);
+    clearButton->setDisabled(false);
+    showLogButton->setDisabled(false);
+}
+
+void RockBrains::disableControls() {
+    logLabel->show();
+    currentProgress->show();
+    userInput->setDisabled(true);
+    isPopular->setDisabled(true);
+    downloadAudioButton->setDisabled(true);
+    downloadVideoButton->setDisabled(true);
+    clearButton->setDisabled(true);
+    showLogButton->setDisabled(true);
 }

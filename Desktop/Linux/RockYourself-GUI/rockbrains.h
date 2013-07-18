@@ -76,7 +76,8 @@ public:
     QVBoxLayout *logWindowLayout;
     QVBoxLayout *helpWindowLayout;
     QVBoxLayout *aboutWindowLayout;
-    RockProcess rockProcess;
+    RockProcess audioProcess;
+    RockProcess videoProcess;
     int totalEnteries;
     int current;
     QStringList requestList;
@@ -88,12 +89,14 @@ signals:
     void processFinished();
 public slots:
     void getAudio();
+    void getVideo();
     void getNextAudioQuery();
+    void getNextVideoQuery();
     void updateDownloadProgress(QString);
     void finishedDownloading();
     bool processUserInput();
-
-
+    void enableControls();
+    void disableControls();
 };
 
 #endif // ROCKBRAINS_H
