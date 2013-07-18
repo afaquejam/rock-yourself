@@ -93,10 +93,6 @@ RockBrains::RockBrains(QWidget *parent) :
     warningLabel = new QLabel();
     warningLabel->setText("WARNING! Be careful of what you download using this software. The developer of this software is not responsible for any misuse of this software.");
 
-    //downloadProgress = new QTextBrowser();
-    //downloadProgress->setText("Progress will be kinda shown here!");
-    //downloadProgress->setMaximumHeight(150);
-
     checkoutMessage = new QMessageBox();
     checkoutMessage->setText("If the log messages didn't say anything bad then check out the Music folder in your home directory. You may find some stuff there :). ");
 
@@ -169,8 +165,7 @@ void RockBrains::getAudio() {
 
     logMessages->clear();
 
-    if (!userInput->toPlainText().replace(QRegExp("\\s+"),"").isEmpty()) {
-
+    if (processUserInput()) {
         logLabel->show();
         currentProgress->show();
         userInput->setDisabled(true);
@@ -180,23 +175,12 @@ void RockBrains::getAudio() {
         clearButton->setDisabled(true);
         showLogButton->setDisabled(true);
 
-        requestList = userInput->toPlainText().split("\n");
         totalEnteries = requestList.size();
         current = -1;
         popular = isPopular->isChecked();
-        getNextQuery();
-
-    } else {
-        QMessageBox *noInputMessage = new QMessageBox();
-        noInputMessage->setText("You're fooling around mate!");
-
-        logMessages->setText("Nothing was entered. You're fooling around mate.");
-        noInputMessage->exec();
-        userInput->clear();
+        getNextAudioQuery();
 
     }
-
-
 
 }
 
@@ -221,27 +205,40 @@ void RockBrains::finishedDownloading() {
 
 }
 
-void RockBrains::getNextQuery() {
+void RockBrains::getNextAudioQuery() {
     current++;
     if(current < totalEnteries) {
         QString request = requestList.at(current);
-        request = request.replace(QRegExp("\\s+"),"+");
-
-        if(QString::compare(request, "+") == 0 || request.isEmpty()) {
-            qDebug()<<"Empty Query.";
-            logMessages->append("Empty Query.");
-            getNextQuery();
-        } else {
-            qDebug()<<request;
-            QString progressBarText(" Downloading " + QString::number(current+1) + " of " + QString::number(totalEnteries) + " ... ");
-            currentProgress->setFormat(progressBarText);
-            currentProgress->setValue((((current+1)*100)/totalEnteries)-1);
-            rockProcess.getAudio(request, popular);
-
-        }
-
+        qDebug()<<request;
+        QString progressBarText(" Downloading " + QString::number(current+1) + " of " + QString::number(totalEnteries) + " ... ");
+        currentProgress->setFormat(progressBarText);
+        currentProgress->setValue((((current+1)*100)/totalEnteries)-1);
+        rockProcess.getAudio(request, popular);
     } else {
         emit finishedAllQueries();
     }
+}
 
+bool RockBrains::processUserInput() {
+    requestList.clear();
+
+    if (!userInput->toPlainText().replace(QRegExp("\\s+"),"").isEmpty()) {
+        QStringList bufferList = userInput->toPlainText().split("\n");
+
+        for (int i=0; i<bufferList.size(); i++) {
+            QString request = bufferList.at(i);
+            request = request.replace(QRegExp("\\s+"),"+");
+            if (!(QString::compare(request, "+") == 0 || request.isEmpty())) {
+                requestList.append(request);
+            }
+        }
+        return true;
+    } else {
+        QMessageBox *noInputMessage = new QMessageBox();
+        noInputMessage->setText("You're fooling around mate!");
+        logMessages->setText("Nothing was entered. You're fooling around mate.");
+        noInputMessage->exec();
+        userInput->clear();
+        return false;
+    }
 }

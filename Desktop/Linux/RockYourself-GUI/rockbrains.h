@@ -88,9 +88,11 @@ signals:
     void processFinished();
 public slots:
     void getAudio();
-    void getNextQuery();
+    void getNextAudioQuery();
     void updateDownloadProgress(QString);
     void finishedDownloading();
+    bool processUserInput();
+
 
 };
 
