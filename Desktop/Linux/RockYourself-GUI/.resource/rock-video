@@ -32,47 +32,29 @@ fi
 
 prefix="http://www.youtube.com/results?search_query="
 
-if [ "$1" -eq 0 ]; then 
-	suffix=""
-else 
-	suffix="+lyrics"
-fi
-
-if [ -n "$2" ]; then
-    filename=`echo $2 | sed 's/+/_/g'`
-    wget --quiet -O resultPage $prefix$2$suffix
+if [ -n "$1" ]; then
+    filename=`echo $1 | sed 's/+/_/g'`
+    wget --quiet -O resultPage $prefix$1
     isEmpty=`cat resultPage`
 
     if [ -n "$isEmpty" ]; then
         resource_url=`sed -n "/id=\"search-results\"/,/<\/span>/p" resultPage | grep -io 'href.*" c' | grep -o '".*"' | sed 's/"/"www.youtube.com/'| sed 's/"//g'`
         echo ""
-        echo "Downloading $filename audio from the internet .... "
+        echo "Downloading $filename video from the internet .... "
         youtube-dl -o videofile $resource_url
 
         if [ -f "videofile" ]; then
+            mv videofile $filename.mp4
             echo ""
-            echo "$filename audio downloaded. How about we add a little processing to it?"
-            ffmpeg -v 0 -i videofile -f mp3 -ab 192000 -vn $filename.mp3
-
-            if [ -f "$filename.mp3" ]; then
-                echo ""
-                echo "Got $filename audio successfully, maybe :P" 
-            else
-                echo ""
-                echo "Oops, something happened during processing. Probably the downloaded stuff was bad."
-            fi 
-
-            rm resultPage videofile
-
+            echo "$filename video downloaded successfully."
         else 
-
             echo ""
-            echo "Check you SongsList Mate! May be Youtube got confused about $line."
-            rm resultPage
-        fi 
+            echo "Check you entry mate! May be Youtube got confused about $filename."
+        fi
+ 
+        rm resultPage
     
     else
-
       echo ""
       echo "Well, this software kinda gets stuff from the Internet. Make sure you're connected to it. Cheers!"
     fi
