@@ -81,3 +81,7 @@ void RockProcess::getVideo(QString argument) {
 void RockProcess::emitFinishedSignal(int exitCode) {
     emit finishedRipping();
 }
+
+void RockProcess::killProcess() {
+    localProcess.close();
+}

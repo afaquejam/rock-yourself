@@ -47,6 +47,7 @@ public slots:
     void readyReadStandardOutput();
     void readyReadStandardError();
     void emitFinishedSignal(int);
+    void killProcess();
 };
 
 #endif // ROCKPROCESS_H

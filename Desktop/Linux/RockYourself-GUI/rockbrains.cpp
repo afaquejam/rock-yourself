@@ -70,6 +70,12 @@ RockBrains::RockBrains(QWidget *parent) :
     aboutButton->setIcon(QIcon(QPixmap::fromImage(QImage(":image/Icons/about.png"))));
     aboutButton->setMinimumSize(200, 50);
 
+    cancelDownloadButton = new QPushButton("Cancel Downloading");
+    cancelDownloadButton->setIcon(QIcon(QPixmap::fromImage(QImage(":image/Icons/cancel.png"))));
+    cancelDownloadButton->setMaximumSize(200, 50);
+    cancelDownloadButton->hide();
+
+
     buttonsLayout = new QVBoxLayout();
     buttonsLayout->addWidget(isPopular);
     buttonsLayout->addWidget(downloadAudioButton);
@@ -90,17 +96,18 @@ RockBrains::RockBrains(QWidget *parent) :
     currentProgress->setTextVisible(true);
     currentProgress->hide();
 
+    cancelLayout = new QHBoxLayout();
+    cancelLayout->addWidget(cancelDownloadButton, Qt::AlignCenter);
+
     warningLabel = new QLabel();
     warningLabel->setText("WARNING! Be careful of what you download using this software. The developer of this software is not responsible for any misuse of this software.");
-
-    checkoutMessage = new QMessageBox();
-    checkoutMessage->setText("If the log messages didn't say anything bad then check out the Music folder in your home directory. You may find some stuff there :). ");
 
     mainLayout = new QVBoxLayout();
     mainLayout->addWidget(logoLabel);
     mainLayout->addLayout(containerLayout);
     mainLayout->addWidget(logLabel);
     mainLayout->addWidget(currentProgress);
+    mainLayout->addLayout(cancelLayout);
     mainLayout->addWidget(warningLabel);
 
     logIcon = new QLabel("Log");
@@ -154,10 +161,13 @@ RockBrains::RockBrains(QWidget *parent) :
     QObject::connect(&videoProcess, SIGNAL(finishedRipping()), this, SLOT(getNextVideoQuery()));
 
     QObject::connect(this, SIGNAL(finishedAllQueries()), this, SLOT(finishedDownloading()));
+    QObject::connect(cancelDownloadButton, SIGNAL(clicked()), this, SLOT(cancelDownloading()));
 }
 
 void RockBrains::getAudio() {
     logMessages->clear();
+    gettingAudio = true;
+    processCanceled = false;
 
     if (processUserInput()) {
         disableControls();
@@ -170,6 +180,8 @@ void RockBrains::getAudio() {
 
 void RockBrains::getVideo() {
     logMessages->clear();
+    gettingAudio = false;
+    processCanceled = false;
 
     if (processUserInput()) {
         disableControls();
@@ -185,14 +197,26 @@ void RockBrains::updateDownloadProgress(QString updates) {
 }
 
 void RockBrains::finishedDownloading() {
+
     enableControls();
+    checkoutMessage = new QMessageBox();
+    if(processCanceled) {
+        checkoutMessage->setText(" Downloading Cancelled!");
+
+    } else {
+        if(gettingAudio) {
+            checkoutMessage->setText(" Check your Music Folder :) ");
+        } else {
+            checkoutMessage->setText(" Check your Videos Folder :)");
+        }
+    }
     checkoutMessage->exec();
 }
 
 void RockBrains::getNextAudioQuery() {
     current++;
 
-    if (current < totalEnteries) {
+    if (current < totalEnteries && !processCanceled) {
         QString request = requestList.at(current);
         qDebug()<<request;
         QString progressBarText(" Downloading " + QString::number(current+1) + " of " + QString::number(totalEnteries) + " ... ");
@@ -206,7 +230,7 @@ void RockBrains::getNextAudioQuery() {
 
 void RockBrains::getNextVideoQuery() {
     current++;
-    if (current < totalEnteries) {
+    if (current < totalEnteries && !processCanceled) {
         QString request = requestList.at(current);
         qDebug()<<request;
         QString progressBarText(" Downloading " + QString::number(current+1) + " of " + QString::number(totalEnteries) + " ... ");
@@ -246,21 +270,37 @@ bool RockBrains::processUserInput() {
 void RockBrains::enableControls() {
     logLabel->hide();
     currentProgress->hide();
+    cancelDownloadButton->hide();
+
     userInput->setDisabled(false);
     isPopular->setDisabled(false);
     downloadAudioButton->setDisabled(false);
     downloadVideoButton->setDisabled(false);
     clearButton->setDisabled(false);
     showLogButton->setDisabled(false);
+    warningLabel->show();
 }
 
 void RockBrains::disableControls() {
     logLabel->show();
     currentProgress->show();
+    cancelDownloadButton->show();
+
     userInput->setDisabled(true);
     isPopular->setDisabled(true);
     downloadAudioButton->setDisabled(true);
     downloadVideoButton->setDisabled(true);
     clearButton->setDisabled(true);
     showLogButton->setDisabled(true);
+    warningLabel->hide();
+}
+
+void RockBrains::cancelDownloading() {
+    processCanceled = true;
+    logMessages->setText(" Downloading Cancelled!");
+    if(gettingAudio) {
+        audioProcess.killProcess();
+    } else {
+        videoProcess.killProcess();
+    }
 }

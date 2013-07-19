@@ -55,12 +55,14 @@ public:
     QPushButton *showLogButton;
     QPushButton *helpButton;
     QPushButton *aboutButton;
+    QPushButton *cancelDownloadButton;
     QCheckBox *isPopular;
     QVBoxLayout *mainLayout;
     QVBoxLayout *inputLayout;
     QVBoxLayout *buttonsLayout;
     QHBoxLayout *containerLayout;
     QHBoxLayout *logLayout;
+    QHBoxLayout *cancelLayout;
     QMessageBox *checkoutMessage;
     QProgressBar *currentProgress;
     QPushButton *clearButton;
@@ -82,6 +84,8 @@ public:
     int current;
     QStringList requestList;
     bool popular;
+    bool gettingAudio;
+    bool processCanceled;
 
     
 signals:
@@ -97,6 +101,7 @@ public slots:
     bool processUserInput();
     void enableControls();
     void disableControls();
+    void cancelDownloading();
 };
 
 #endif // ROCKBRAINS_H
