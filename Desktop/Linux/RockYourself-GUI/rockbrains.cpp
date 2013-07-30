@@ -101,7 +101,7 @@ RockBrains::RockBrains(QWidget *parent) :
     cancelLayout->addWidget(cancelDownloadButton, Qt::AlignCenter);
 
     warningLabel = new QLabel();
-    warningLabel->setText("WARNING! Be careful of what you download using this software. The developer of this software is not responsible for any misuse of this software.");
+    warningLabel->setText("By using this software, you agree to <b><u>Terms of Use</u></b> mentioned in the <i>About</i> section.");
 
     mainLayout = new QVBoxLayout();
     mainLayout->addWidget(logoLabel);
