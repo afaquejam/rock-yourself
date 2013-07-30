@@ -22,6 +22,7 @@
 
 
 #include "rockbrains.h"
+#include <QDesktopServices>
 
 RockBrains::RockBrains(QWidget *parent) :
     QWidget(parent)
@@ -205,12 +206,28 @@ void RockBrains::finishedDownloading() {
 
     } else {
         if(gettingAudio) {
-            checkoutMessage->setText(" Check your Music Folder :) ");
+            checkoutMessage->setText("Got Audio files!");
+            checkoutMessage->setInformativeText("Do you want to open the Music folder?");
+            checkoutMessage->setStandardButtons(QMessageBox::Open | QMessageBox::Cancel);
+            checkoutMessage->setDefaultButton(QMessageBox::Open);
+            int userChoice = checkoutMessage->exec();
+
+            if(userChoice == QMessageBox::Open) {
+                QDesktopServices::openUrl(QUrl(QDesktopServices::storageLocation(QDesktopServices::MusicLocation)));
+            }
+
         } else {
-            checkoutMessage->setText(" Check your Videos Folder :)");
+            checkoutMessage->setText("Got Video files!");
+            checkoutMessage->setInformativeText("Do you want to open the Videos folder?");
+            checkoutMessage->setStandardButtons(QMessageBox::Open | QMessageBox::Cancel);
+            checkoutMessage->setDefaultButton(QMessageBox::Open);
+            int userChoice = checkoutMessage->exec();
+
+            if(userChoice == QMessageBox::Open) {
+                QDesktopServices::openUrl(QUrl(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation)));
+            }
         }
     }
-    checkoutMessage->exec();
 }
 
 void RockBrains::getNextAudioQuery() {
@@ -223,6 +240,11 @@ void RockBrains::getNextAudioQuery() {
         currentProgress->setFormat(progressBarText);
         currentProgress->setValue((((current+1)*100)/totalEnteries)-1);
         audioProcess.getAudio(request, popular);
+
+        // Only for testing purposes, Uncomment the above line before the commit.
+        //getNextAudioQuery();
+        // Testing
+
     } else {
         emit finishedAllQueries();
     }
@@ -237,6 +259,10 @@ void RockBrains::getNextVideoQuery() {
         currentProgress->setFormat(progressBarText);
         currentProgress->setValue((((current+1)*100)/totalEnteries)-1);
         videoProcess.getVideo(request);
+
+        // Only for testing purposes, Uncomment the above line before the commit.
+        //getNextVideoQuery();
+        // Testing
     } else {
         emit finishedAllQueries();
     }
