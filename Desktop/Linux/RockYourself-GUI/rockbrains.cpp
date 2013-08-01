@@ -36,7 +36,7 @@ RockBrains::RockBrains(QWidget *parent) :
     logoLabel->setPixmap(QPixmap::fromImage(QImage(":image/Icons/Logo.png")));
     logoLabel->setStyleSheet("qproperty-alignment: 'AlignCenter'");
 
-    infoLabel = new QLabel("Write below the list of stuff that you would like to have as shown: ");
+    infoLabel = new QLabel("List down the enteries below. See <b>Help</b> for more on how to use this software.");
 
     userInput = new QTextEdit();
 
@@ -130,8 +130,25 @@ RockBrains::RockBrains(QWidget *parent) :
     helpLabel->setPixmap(QPixmap::fromImage(QImage(":image/Icons/help_label.png")));
     helpLabel->setStyleSheet("qproperty-alignment: 'AlignCenter'");
 
+    QString helpText;
+    helpText.append("<center> <h2><i>Using this Software is really simple.<i></h2></center><br>");
+    helpText.append(" You can watch a short x minute video on how to use this software : <br><br>");
+    helpText.append(" List down your enteries in the input box.");
+    helpText.append(" For best results, enter first the artist name followed by the track name.");
+    helpText.append(" For example, enter as follows: <br><br><i>Immortal beats oh wee <br> Jallacy Frozen Blades <br> Soda Eighteen Pieces</i> <br><br>");
+    helpText.append("If you think your enteries are popular, then leave the <i>Popular Stuff</i> checkbox checked, else uncheck it. If you are downloading videos, then you shouldn't worry about this option. <br><br>");
+    helpText.append(" You're ready to go! <b>Hit the 'Get Audio' or 'Get Video' button.</b> <br><br>");
+    helpText.append(" Downloading will start and the progress will be shown on the bottom part of the window.");
+    helpText.append(" After finishing the download, the software will prompt you to open the Music folder or the Videos folder, depending on whether you download audio or video.");
+    helpText.append(" Audio files will be downloaded in the Music folder while the Videos will be downloaded in the Videos folder.");
+    helpText.append(" You can view the log of your download in the Log window. <br> <br>");
+    helpText.append(" That's it! If you have any questions, feel free to email me: <b><u>Afaque.Hussain@outlook.com</u></b> <br><br>");
+    helpText.append(" <i> Cheers,<br><b>Afaque.</b></i> <br>");
+
     helpContent = new QTextBrowser();
-    helpContent->setText("Some kind of help will be shown here.");
+    helpContent->setText(helpText);
+
+
 
     helpWindowLayout = new QVBoxLayout();
     helpWindowLayout->addWidget(helpLabel);
