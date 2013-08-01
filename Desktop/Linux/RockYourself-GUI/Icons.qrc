@@ -8,5 +8,8 @@
         <file>Icons/video.png</file>
         <file>Icons/clear.png</file>
         <file>Icons/cancel.png</file>
+        <file>Icons/about_label.png</file>
+        <file>Icons/help_label.png</file>
+        <file>Icons/Log_label.png</file>
     </qresource>
 </RCC>

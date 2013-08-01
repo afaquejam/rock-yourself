@@ -101,7 +101,7 @@ RockBrains::RockBrains(QWidget *parent) :
     cancelLayout->addWidget(cancelDownloadButton, Qt::AlignCenter);
 
     warningLabel = new QLabel();
-    warningLabel->setText("By using this software, you agree to <b><u>Terms of Use</u></b> mentioned in the <i>About</i> section.");
+    warningLabel->setText("By using this software, you agree to <b><u>Terms of Use</u></b> mentioned in the <b>About</b> section.");
 
     mainLayout = new QVBoxLayout();
     mainLayout->addWidget(logoLabel);
@@ -111,7 +111,10 @@ RockBrains::RockBrains(QWidget *parent) :
     mainLayout->addLayout(cancelLayout);
     mainLayout->addWidget(warningLabel);
 
-    logIcon = new QLabel("Log");
+    logIcon = new QLabel();
+    logIcon->setPixmap(QPixmap::fromImage(QImage(":image/Icons/Log_label.png")));
+    logIcon->setStyleSheet("qproperty-alignment: 'AlignCenter'");
+
     logMessages = new QTextBrowser();
     logMessages->setText("Some kind Complete Log Messages will be shown here.");
 
@@ -123,7 +126,10 @@ RockBrains::RockBrains(QWidget *parent) :
     logWindow->setLayout(logWindowLayout);
     logWindow->setMinimumSize(600, 400);
 
-    helpLabel = new QLabel("Help");
+    helpLabel = new QLabel();
+    helpLabel->setPixmap(QPixmap::fromImage(QImage(":image/Icons/help_label.png")));
+    helpLabel->setStyleSheet("qproperty-alignment: 'AlignCenter'");
+
     helpContent = new QTextBrowser();
     helpContent->setText("Some kind of help will be shown here.");
 
@@ -135,7 +141,10 @@ RockBrains::RockBrains(QWidget *parent) :
     helpWindow->setLayout(helpWindowLayout);
     helpWindow->setMinimumSize(600, 400);
 
-    aboutLabel = new QLabel("About");
+    aboutLabel = new QLabel();
+    aboutLabel->setPixmap(QPixmap::fromImage(QImage(":image/Icons/about_label.png")));
+    aboutLabel->setStyleSheet("qproperty-alignment: 'AlignCenter'");
+
     aboutContent = new QTextBrowser();
     aboutContent->setText("Something about me will be shown here.");
 
