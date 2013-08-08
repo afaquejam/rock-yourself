@@ -162,8 +162,19 @@ RockBrains::RockBrains(QWidget *parent) :
     aboutLabel->setPixmap(QPixmap::fromImage(QImage(":image/Icons/about_label.png")));
     aboutLabel->setStyleSheet("qproperty-alignment: 'AlignCenter'");
 
+    QString aboutText;
+    aboutText.append("<center> <h2>Rock-Yourself </h2> <i>Beta</i></center> <br><br>");
+    aboutText.append("A project to reduce the pain of getting multiple (creative commons licenced) stuff from the internet by eliminating the need of URLs as much as possible.");
+    aboutText.append(" We intend to develop this and modify according to the needs of users, as fast as possible.");
+    aboutText.append(" Contributions to this project, suggestions and bug reports are always welcome with arms wide open.");
+    aboutText.append(" A hopeful project from Afaque Hussain S J. Feel free to contact me: <b><u>Afaque.Hussain@outlook.com</u></b> <br><br>");
+    aboutText.append("<i>Cheers</i>! <br> <b><i>Afaque.</i></b><br><br>");
+    aboutText.append("<center> <h2> Terms of Use </h2></center><br>");
+    aboutText.append("This software currently downloads content from the Youtube. Hence all the terms mentioned on the Youtube Website <i>(http://www.youtube.com/t/terms)</i> apply.");
+    aboutText.append(" Be careful of what you download as you alone are responsible that. The developer of this software is not responsible for the content that you download.<br><br>");
+    aboutText.append(" <i>Have Fun :) </i> <br>");
     aboutContent = new QTextBrowser();
-    aboutContent->setText("Something about me will be shown here.");
+    aboutContent->setText(aboutText);
 
     aboutWindowLayout = new QVBoxLayout();
     aboutWindowLayout->addWidget(aboutLabel);
