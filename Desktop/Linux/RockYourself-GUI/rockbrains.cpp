@@ -116,7 +116,7 @@ RockBrains::RockBrains(QWidget *parent) :
     logIcon->setStyleSheet("qproperty-alignment: 'AlignCenter'");
 
     logMessages = new QTextBrowser();
-    logMessages->setText("Some kind Complete Log Messages will be shown here.");
+    logMessages->setText("Complete log messages will be shown here.");
 
     logWindowLayout = new QVBoxLayout();
     logWindowLayout->addWidget(logIcon);
@@ -132,7 +132,6 @@ RockBrains::RockBrains(QWidget *parent) :
 
     QString helpText;
     helpText.append("<center> <h2><i>Using this Software is really simple.<i></h2></center><br>");
-    helpText.append(" You can watch a short x minute video on how to use this software : <br><br>");
     helpText.append(" List down your enteries in the input box.");
     helpText.append(" For best results, enter first the artist name followed by the track name.");
     helpText.append(" For example, enter as follows: <br><br><i>Immortal beats oh wee <br> Jallacy Frozen Blades <br> Soda Eighteen Pieces</i> <br><br>");
@@ -170,8 +169,8 @@ RockBrains::RockBrains(QWidget *parent) :
     aboutText.append(" A hopeful project from Afaque Hussain S J. Feel free to contact me: <b><u>Afaque.Hussain@outlook.com</u></b> <br><br>");
     aboutText.append("<i>Cheers</i>! <br> <b><i>Afaque.</i></b><br><br>");
     aboutText.append("<center> <h2> Terms of Use </h2></center><br>");
-    aboutText.append("This software currently downloads content from the Youtube. Hence all the terms mentioned on the Youtube Website <i>(http://www.youtube.com/t/terms)</i> apply.");
-    aboutText.append(" Be careful of what you download as you alone are responsible that. The developer of this software is not responsible for the content that you download.<br><br>");
+    aboutText.append("This software currently downloads content from Youtube. Hence all the terms mentioned on the Youtube Website <i>(http://www.youtube.com/t/terms)</i> apply.");
+    aboutText.append(" Be careful of what you download as you alone are responsible for that. The developer of this software is not responsible for the content that you download.<br><br>");
     aboutText.append(" <i>Have Fun :) </i> <br>");
     aboutContent = new QTextBrowser();
     aboutContent->setText(aboutText);
