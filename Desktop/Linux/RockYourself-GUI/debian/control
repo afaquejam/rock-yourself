@@ -1,0 +1,14 @@
+Source: rockyourself
+Section: sound
+Priority: extra
+Maintainer: Afaque Hussain <Afaque.Hussain@outlook.com>
+Build-Depends: debhelper (>= 8.0.0), libqt4-dev, qt4-qmake
+Standards-Version: 3.9.3
+Homepage: http://afaquejam.github.io/rockyourself/
+#Vcs-Git: git://git.debian.org/collab-maint/rockyourself.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/rockyourself.git;a=summary
+
+Package: rockyourself
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, wget, libqt4-gui, youtube-dl, ffmpeg
+Description: A project to reduce the pain of getting (more than one & mostly interesting) stuff from the internet by eliminating the need of URLs as much as possible.
