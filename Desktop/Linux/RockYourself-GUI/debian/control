@@ -10,5 +10,5 @@ Homepage: http://afaquejam.github.io/rockyourself/
 
 Package: rockyourself
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, wget, libqt4-gui, youtube-dl, ffmpeg
+Depends: ${shlibs:Depends}, ${misc:Depends}, wget, libqt4-gui, youtube-dl, ffmpeg, libavcodec-extra-53
 Description: A project to reduce the pain of getting (more than one & mostly interesting) stuff from the internet by eliminating the need of URLs as much as possible.
